@@ -41,24 +41,26 @@
   <main class="container">
     <h1 class="text-center mt-3">表單</h1>
 
-    <form action="https://script.google.com/macros/s/AKfycbwtDqZiw3RSzAksn5TaFedWu_V0GGa51UrDXk9UVswEBCg_9bF18Hc9M0uuNxsxNpZg/exec" method="post">
+    <form action="https://script.google.com/macros/s/AKfycbyPIhxZw7GrREO1kQuX1ZWT5T_Ri9nOyvQSQObEZYNjBE9-mUG5AUpviTesQHbVSqdN/exec" method="post">
       <div class="row">
+
+      </div>
+
 
     </form>
 
-    <form action="" class="border border-primary">
+    <form action="https://script.google.com/macros/s/AKfycbyPIhxZw7GrREO1kQuX1ZWT5T_Ri9nOyvQSQObEZYNjBE9-mUG5AUpviTesQHbVSqdN/exec" class="border border-primary" method="post">
       <div class="row" id="form_item">
 
       </div>
 
-      <!-- 隱藏-->
-      <input type="hidden" name='op' value='set_sheet' class="form-control" id="op">
       <button type="submit" class="btn btn-primary w-100" id="submit">送出</button>
     </form>
   </main>
 
   <script>
     window.onload = function() {
+
       let submitBtn = document.getElementById('submit');
       submitBtn.onclick = function() {
 
@@ -68,12 +70,13 @@
       box.insertAdjacentHTML("afterend", "<div class='text-center mt-3'>container寬度：" + box.clientWidth + "px</div>" + "<div class='text-center mt-3'>網頁可見區域寬：" + document.body.clientWidth + "px</div>");
 
       // 整理出來的結構資料
+
       let stru = [{
           label: '姓名',
           type: 'text',
           name: 'name1',
           value: '',
-          valid: '',//required
+          valid: 'required', //required
           option: '',
           width: '3'
         },
@@ -100,7 +103,7 @@
           type: 'password',
           name: 'password',
           value: '',
-          valid: 'required', //required
+          valid: '', //required
           option: '',
           width: '3'
         },
@@ -172,25 +175,25 @@
           type: 'select',
           name: 'unit',
           value: '',
-          valid: 'required', //required
+          valid: '', //required
           option: '行政|訓導|總務',
           width: '3'
         },
         {
           label: '課表',
           type: 'select_m',
-          name: 'schedule',
+          name: 'area',
           value: '',
-          valid: 'required', //required
+          valid: '', //required
           option: '體育|音樂|美術',
           width: '3'
         },
         {
-          label: '文字區域',
+          label: '詳細內容',
           type: '段落',
           name: 'textarea',
           value: '123',
-          valid: 'required', //required
+          valid: '', //required
           option: '',
           width: '12'
         },
@@ -200,40 +203,56 @@
           name: 'checkbox',
           value: '',
           valid: '', //required
-          option: '蘋果|葡萄|橘子',
+          option: '蘋果|橘子',
           width: '12'
         },
-
-
+        {
+          label: 'op',
+          type: 'hidden',
+          name: 'op',
+          value: 'set_sheet',
+          valid: '', //required
+          option: '',
+          width: '3'
+        },
+        {
+          label: 'callback_url',
+          type: 'hidden',
+          name: 'callback_url',
+          value: '',
+          valid: '', //required
+          option: '',
+          width: '3'
+        }
       ];
       let form_item = document.getElementById('form_item');
       let form_item_html = options_html = '';
       let options;
 
-      for(let i in stru){
-        if(stru[i]['type'] === 'text'      ||
-           stru[i]['type'] === 'url'       ||
-           stru[i]['type'] === 'email'     ||
-           stru[i]['type'] === 'password'  ||
-           stru[i]['type'] === 'date'      ||
-           stru[i]['type'] === 'month'     ||
-           stru[i]['type'] === 'week'      ||
-           stru[i]['type'] === 'number'    ||
-           stru[i]['type'] === 'color'     ||
-           stru[i]['type'] === 'search'
-           ){//簡答
+      for (let i in stru) {
+        if (stru[i]['type'] === 'text' ||
+          stru[i]['type'] === 'url' ||
+          stru[i]['type'] === 'email' ||
+          stru[i]['type'] === 'password' ||
+          stru[i]['type'] === 'date' ||
+          stru[i]['type'] === 'month' ||
+          stru[i]['type'] === 'week' ||
+          stru[i]['type'] === 'number' ||
+          stru[i]['type'] === 'color' ||
+          stru[i]['type'] === 'search'
+        ) { //簡答
           form_item_html += `
             <div class="col-sm-${stru[i]['width']} mb-3">
               <label for="${stru[i]['name']}" class="form-label">${stru[i]['label']}</label>
               <input type="${stru[i]['type']}" name="${stru[i]['name']}" value="${stru[i]['value']}" class="form-control" id="${stru[i]['name']}" ${stru[i]['valid']}>
             </div>`;
-        }else if(stru[i]['type'] === 'radio'){
+        } else if (stru[i]['type'] === 'radio') {
           options = stru[i]['option'].split('|');
           options_html = '';
 
-          for(let j in options){
-            // 三元運算 成立指派a 不成立指派b
-            let required = (j=='0') ? stru[i]['valid'] : '';
+          for (let j in options) {
+            // 三元運算
+            let required = (j == '0') ? stru[i]['valid'] : '';
             options_html += `
               <div class="form-check form-check-inline">
                 <input type="${stru[i]['type']}" name="${stru[i]['name']}" value="${options[j]}" class="form-check-input" id="${stru[i]['name']}_${j}" ${required}>
@@ -247,17 +266,17 @@
               ${options_html}
             </div>`;
 
-        }else if(stru[i]['type'] === 'select'){
-          console.log(stru[i]['option']);
-
+        } else if (stru[i]['type'] === 'select') {
+          // 1.首先替換 變數
+          // 2.將 stru[i]['option'] => 陣列 ['下拉選單1', '下拉選單2', '下拉選單3']
+          // 3.跑迴圈
+          // stru[i]['option'] => '行政|訓導|總務'
           options = stru[i]['option'].split('|');
-          console.log(options);
-          options_html = ''; /*前面跑過 要先清空*/
-          for(let j in options){
+          options_html = '';
+          for (let j in options) {
             options_html += `
               <option value="${options[j]}">${options[j]}</option>`;
-          };
-
+          }
 
           form_item_html += `
             <div class="col-sm-${stru[i]['width']} mb-3">
@@ -266,66 +285,102 @@
                ${options_html}
               </select>
             </div>`;
+        } else if (stru[i]['type'] === 'select_m') {
 
-        }else if(stru[i]['type'] === 'select_m'){
           options = stru[i]['option'].split('|');
-          options_html = ''; /*前面跑過 要先清空*/
-          for(let j in options){
+          options_html = '';
+          for (let j in options) {
             options_html += `
               <option value="${options[j]}">${options[j]}</option>`;
           }
 
+          form_item_html += `
+            <div class="col-sm-${stru[i]['width']} mb-3">
+              <label class="form-label">${stru[i]['label']}</label>
+              <select name="${stru[i]['name']}" class="form-select" id="${stru[i]['name']}" ${stru[i]['valid']} multiple >
+               ${options_html}
+              </select>
+            </div>`;
+        } else if (stru[i]['type'] === '段落') {
 
           form_item_html += `
             <div class="col-sm-${stru[i]['width']} mb-3">
               <label class="form-label">${stru[i]['label']}</label>
-              <select name="${stru[i]['name']}" class="form-select" id="${stru[i]['name']}" ${stru[i]['valid']} multiple>
-               ${options_html}
-              </select>
+              <textarea name="${stru[i]['name']}" class="form-control" id="${stru[i]['name']}" rows="5" ${stru[i]['valid']}>${stru[i]['value']}</textarea>
             </div>`;
-
-        }else if(stru[i]['type'] === '段落'){
-          form_item_html += `
-          <div class="col-sm-${stru[i]['width']} mb-3">
-              <label class="form-label">${stru[i]['label']}</label>
-              <textarea name="${stru[i]['name']}" value="${stru[i]['value']}" class="form-control" id="${stru[i]['name']}" rows="5" ${stru[i]['valid']}>${stru[i]['value']}</textarea>
-            </div>`;
-        }else if(stru[i]['type'] === 'checkbox'){
+        } else if (stru[i]['type'] === 'checkbox') {
           options = stru[i]['option'].split('|');
           options_html = '';
-          let required = stru[i]['valid'] ? `oninput="alert('error')"`: '';
-          for(let j in options){
+          //三元運算
+          let required = stru[i]['valid'] ? `oninput="renderCheckbox('${stru[i]['name']}')"` : '';
+
+          for (let j in options) {
             options_html += `
               <div class="form-check form-check-inline">
                 <input type="${stru[i]['type']}" name="${stru[i]['name']}" value="${options[j]}" class="form-check-input" id="${stru[i]['name']}_${j}" ${stru[i]['valid']} ${required}>
                 <label class="form-check-label" for="${stru[i]['name']}_${j}">${options[j]}</label>
               </div>`;
           };
+
           form_item_html += `
-        <div class="col-sm-${stru[i]['width']} mb-3">
-          <label class="form-label w-100">${stru[i]['label']}</label>
-          ${options_html}
-          </div>`;
+            <div class="col-sm-${stru[i]['width']} mb-3">
+              <label class="form-label w-100">${stru[i]['label']}</label>
+              ${options_html}
+            </div>`;
+        } else if (stru[i]['type'] === 'hidden') {
+          form_item_html += `
+            <input type="hidden" name="${stru[i]['name']}" value="${stru[i]['value']}" id="${stru[i]['name']}">`;
         }
 
       }
-      // console.log(form_item_html);
-
       form_item.innerHTML = form_item_html;
+      let callback_url = document.getElementById('callback_url');
+      callback_url.value = window.location.href;
 
 
+    }
+    /*
+      渲染畫面
+    */
+    function renderCheckbox(name) {
+      if (isAtLeastOneChecked(name)) {
+        removeRequired(name);
+      } else {
+        setRequired(name);
+      }
+    }
 
-      // let form_item = '';
-      // let option, option_item;
+    /*
+      判斷是否有勾選
+    */
+    function isAtLeastOneChecked(name) {
+      let checkboxes = Array.from(document.getElementsByName(name));
 
+      return checkboxes.some(function(item) {
+        return item.checked;
+      });
+    }
 
-      // let form_item_id = document.getElementById('form_item');
+    /*=============================
+      設定屬性 required
+    ===============================*/
+    function setRequired(name) {
+      let checkboxes = Array.from(document.getElementsByName(name));
+      for (let i in checkboxes) {
+        checkboxes[i].setAttribute('required', true);
+      }
+    }
 
-      // form_item_id.innerHTML = form_item;
+    /*=============================
+      移除屬性 required
+    ===============================*/
+    function removeRequired(name) {
+      let checkboxes = Array.from(document.getElementsByName(name));
+      for (let i in checkboxes) {
+        checkboxes[i].removeAttribute('required');
+      }
     }
   </script>
-
-
 </body>
 
 </html>
