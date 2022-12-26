@@ -90,8 +90,8 @@
         method: 'GET',              // 請求資料的方式(Ex:POST / GET / PUT...等)
         dataType: 'json',           // 請求資料的類型(Ex:xml, json, script, or html...等)
         async: true,               // 預設是true=非同步,false=同步 (true時整行可省略)
-        beforeSend: function(){     // 發送請求前執行的動作
-          //......
+        beforeSend: function(result){     // 發送請求前執行的動作
+          $("#show").prop("class","d-none my-5");
         },
         success: function(result) { // 當成功接收到資料時
           let stru = result;
